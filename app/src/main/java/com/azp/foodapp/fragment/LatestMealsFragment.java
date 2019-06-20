@@ -1,5 +1,6 @@
 package com.azp.foodapp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,20 +13,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.azp.foodapp.MainActivity;
 import com.azp.foodapp.R;
+import com.azp.foodapp.activities.DetailsActivity;
 import com.azp.foodapp.adapter.LatestMealsAdapter;
-import com.azp.foodapp.api.ApiClient;
 import com.azp.foodapp.api.ApiInterface;
 import com.azp.foodapp.models.LatestResponse;
 import com.azp.foodapp.models.MealsItem;
 import com.azp.foodapp.utils.ApiUtils;
-
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +71,7 @@ public class LatestMealsFragment extends Fragment implements SwipeRefreshLayout.
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
 
+
         OnLoadingSwipeRefresh("");
 
         topHeadline = rootView.findViewById(R.id.headline);
@@ -108,14 +106,22 @@ public class LatestMealsFragment extends Fragment implements SwipeRefreshLayout.
                         mealsItems.clear();
                     }
 
+//                    LatestMealsAdapter adapter = new LatestMealsAdapter(listener);
+
+                    LatestMealsAdapter.OnItemClickListener listener = (view, position) -> {
+                        Toast.makeText(getContext(), position +"",Toast.LENGTH_SHORT).show();
+                    };
+
                     mealsItems = response.body().getMeals();
                     Log.d("Meals Data", mealsItems.toString());
-                    latestMealsAdapter = new LatestMealsAdapter(mealsItems);
+                    latestMealsAdapter = new LatestMealsAdapter(mealsItems, listener);
                     recyclerView.setAdapter(latestMealsAdapter);
                     latestMealsAdapter.notifyDataSetChanged();
 
                     topHeadline.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setRefreshing(false);
+
+                    initListener();
                 }
             }
 
@@ -126,6 +132,16 @@ public class LatestMealsFragment extends Fragment implements SwipeRefreshLayout.
             }
         });
 
+    }
+
+    private void initListener() {
+        latestMealsAdapter.setOnItemClickListener(new LatestMealsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(getContext(), DetailsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void OnLoadingSwipeRefresh(final String keyword) {

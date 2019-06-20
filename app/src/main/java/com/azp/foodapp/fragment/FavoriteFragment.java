@@ -15,10 +15,9 @@ import com.azp.foodapp.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GalleryFragment extends Fragment {
+public class FavoriteFragment extends Fragment {
 
-
-    public GalleryFragment() {
+    public FavoriteFragment() {
         // Required empty public constructor
     }
 
@@ -27,12 +26,12 @@ public class GalleryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_gallery, container, false);
+        return inflater.inflate(R.layout.fragment_tools, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Gallery");
+        getActivity().setTitle("Tools");
     }
 }

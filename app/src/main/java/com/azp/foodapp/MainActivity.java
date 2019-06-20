@@ -1,9 +1,7 @@
 package com.azp.foodapp;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -13,12 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.azp.foodapp.fragment.GalleryFragment;
 import com.azp.foodapp.fragment.LatestMealsFragment;
-import com.azp.foodapp.fragment.SlideShowFragment;
-import com.azp.foodapp.fragment.ToolsFragment;
+import com.azp.foodapp.fragment.MealCategoryFragment;
+import com.azp.foodapp.fragment.FavoriteFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -92,16 +88,12 @@ public class MainActivity extends AppCompatActivity
                 fragment = new LatestMealsFragment();
                 break;
 
-            case R.id.nav_popular:
-                fragment = new GalleryFragment();
-                break;
-
             case R.id.nav_category:
-                fragment = new SlideShowFragment();
+                fragment = new MealCategoryFragment();
                 break;
 
             case R.id.nav_favorite:
-                fragment = new ToolsFragment();
+                fragment = new FavoriteFragment();
                 break;
 
                 default:

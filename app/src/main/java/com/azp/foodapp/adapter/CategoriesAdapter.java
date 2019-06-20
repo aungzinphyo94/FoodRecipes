@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.azp.foodapp.R;
-import com.azp.foodapp.models.MealsItem;
+import com.azp.foodapp.models.Categories;
+import com.azp.foodapp.models.CategoriesItem;
 import com.azp.foodapp.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -26,31 +28,34 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
 
+public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder> {
 
-public class LatestMealsAdapter extends RecyclerView.Adapter<LatestMealsAdapter.LatestMealsViewHolder> {
-
-    private List<MealsItem> mealsItems;
+    private List<CategoriesItem> categoriesItems;
     private Context context;
     private OnItemClickListener onItemClickListener;
 
-    public LatestMealsAdapter(List<MealsItem> mealsItems, OnItemClickListener listener) {
-        this.mealsItems = mealsItems;
-        onItemClickListener = listener;
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public CategoriesAdapter(List<CategoriesItem> categoriesItems, OnItemClickListener onItemClickListener) {
+        this.categoriesItems = categoriesItems;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
     @Override
-    public LatestMealsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-//        Context context = viewGroup.getContext();
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_menus_item, viewGroup, false);
-        return new LatestMealsViewHolder(view, onItemClickListener);
+    public CategoriesViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        Context context = viewGroup.getContext();
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_categories_item, viewGroup, false);
+        return new CategoriesViewHolder(view, onItemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LatestMealsViewHolder latestMealsViewHolder, int position) {
+    public void onBindViewHolder(@NonNull CategoriesViewHolder categoriesViewHolder, int position) {
 
-        final LatestMealsViewHolder holder = latestMealsViewHolder;
-        MealsItem model = mealsItems.get(position);
+        final CategoriesViewHolder holder = categoriesViewHolder;
+        CategoriesItem model = categoriesItems.get(position);
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(Utils.getRandomDrawableColor());
@@ -58,8 +63,8 @@ public class LatestMealsAdapter extends RecyclerView.Adapter<LatestMealsAdapter.
         requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
         requestOptions.centerCrop();
 
-        Glide.with(latestMealsViewHolder.imageView.getContext())
-                .load(model.getStrMealThumb())
+        Glide.with(categoriesViewHolder.imageView.getContext())
+                .load(model.getStrCategoryThumb())
                 .apply(requestOptions)
                 .listener(new RequestListener<Drawable>() {
                     @Override
@@ -77,47 +82,37 @@ public class LatestMealsAdapter extends RecyclerView.Adapter<LatestMealsAdapter.
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(holder.imageView);
 
-        holder.strMeal.setText(model.getStrMeal());
-        holder.strCategory.setText(model.getStrCategory());
-        holder.strArea.setText(model.getStrArea());
-
+        holder.strCategoryName.setText(model.getStrCategory());
     }
 
     @Override
     public int getItemCount() {
-        return mealsItems.size();
-    }
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
+        Log.d("CategorySize", categoriesItems.size()+"");
+        return categoriesItems.size();
     }
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
 
-    public class LatestMealsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class CategoriesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView strMeal, strCategory, strArea;
+        TextView strCategoryName;
 
         ImageView imageView;
         ProgressBar progressBar;
 
         OnItemClickListener onItemClickListener;
 
-        public LatestMealsViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
+        public CategoriesViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
 
             itemView.setOnClickListener(this);
-            strMeal = itemView.findViewById(R.id.title);
-            strArea = itemView.findViewById(R.id.area);
-            strCategory = itemView.findViewById(R.id.category);
-
-            imageView = itemView.findViewById(R.id.img);
+            strCategoryName = itemView.findViewById(R.id.title);
+            imageView = itemView.findViewById(R.id.img_category);
             progressBar = itemView.findViewById(R.id.progress_load_photo);
 
             itemView.setOnClickListener(this);
-
             this.onItemClickListener = onItemClickListener;
         }
 
